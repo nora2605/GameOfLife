@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34518.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfLife", "GameOfLife.csproj", "{055A2E9F-A306-45E9-9B93-08C8A03A142D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		PubBuild|Any CPU = PubBuild|Any CPU
+		PubBuild|x64 = PubBuild|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.Debug|x64.ActiveCfg = Debug|x64
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.Debug|x64.Build.0 = Debug|x64
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.PubBuild|Any CPU.ActiveCfg = Release|Any CPU
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.PubBuild|Any CPU.Build.0 = Release|Any CPU
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.PubBuild|x64.ActiveCfg = PubBuild|x64
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.PubBuild|x64.Build.0 = PubBuild|x64
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.Release|x64.ActiveCfg = Release|x64
+		{055A2E9F-A306-45E9-9B93-08C8A03A142D}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {748692ED-983A-4618-BC14-9A223AACC5D9}
+	EndGlobalSection
+EndGlobal
