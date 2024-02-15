@@ -14,6 +14,7 @@
     <SignAssembly>False</SignAssembly>
     <PlatformTarget>x64</PlatformTarget>
     <NeutralLanguage>en</NeutralLanguage>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

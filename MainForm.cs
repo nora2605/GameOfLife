@@ -9,7 +9,7 @@ public partial class MainForm : Form
     private readonly System.Windows.Forms.Timer stepTimer;
     private readonly System.Windows.Forms.Timer renderTimer;
     private bool[,] cells;
-    private byte[,] cellBuffer;
+    private bool[,] cellBuffer;
 
     private Bitmap imageBuffer;
 
@@ -30,7 +30,7 @@ public partial class MainForm : Form
         vSize = (int)yDim.Value;
 
         cells = new bool[hSize, vSize];
-        cellBuffer = new byte[hSize, vSize];
+        cellBuffer = new bool[hSize, vSize];
 
         stepTimer = new()
         {
@@ -160,103 +160,101 @@ public partial class MainForm : Form
 
     private void StepCorners()
     {
-        if (cells[0, 0])
-        {
-            cellBuffer[0, 1]++;
-            cellBuffer[1, 0]++;
-            cellBuffer[1, 1]++;
-        }
-        if (cells[hSize - 1, 0])
-        {
-            cellBuffer[hSize - 2, 0]++;
-            cellBuffer[hSize - 2, 1]++;
-            cellBuffer[hSize - 1, 1]++;
-        }
-        if (cells[0, vSize - 1])
-        {
-            cellBuffer[0, vSize - 2]++;
-            cellBuffer[1, vSize - 2]++;
-            cellBuffer[1, vSize - 1]++;
-        }
-        if (cells[hSize - 1, vSize - 1])
-        {
-            cellBuffer[hSize - 2, vSize - 2]++;
-            cellBuffer[hSize - 2, vSize - 1]++;
-            cellBuffer[hSize - 1, vSize - 2]++;
-        }
+        cellBuffer[0, 0] =
+            cells[0, 0] ?
+                CountNeighborsBranch(0, 0) == 2 || CountNeighborsBranch(0, 0) == 3 :
+                CountNeighborsBranch(0, 0) == 3;
+        cellBuffer[hSize - 1, 0] =
+            cells[hSize - 1, 0] ?
+                CountNeighborsBranch(hSize - 1, 0) == 2 || CountNeighborsBranch(hSize - 1, 0) == 3 :
+                CountNeighborsBranch(hSize - 1, 0) == 3;
+        cellBuffer[0, vSize - 1] =
+            cells[0, vSize - 1] ?
+                CountNeighborsBranch(0, vSize - 1) == 2 || CountNeighborsBranch(0, vSize - 1) == 3 :
+                CountNeighborsBranch(0, vSize - 1) == 3;
+        cellBuffer[hSize - 1, vSize - 1] =
+            cells[hSize - 1, vSize - 1] ?
+                CountNeighborsBranch(hSize - 1, vSize - 1) == 2 || CountNeighborsBranch(hSize - 1, vSize - 1) == 3 :
+                CountNeighborsBranch(hSize - 1, vSize - 1) == 3;
     }
 
     private void StepEdges()
     {
-        for (int s = 1; s < hSize - 1; s++)
+        for (int x = 1; x < hSize - 1; x++)
         {
-            if (cells[s, 0])
+            cellBuffer[x, 0] =
+                cells[x, 0] ?
+                    CountNeighborsBranch(x, 0) == 2 || CountNeighborsBranch(x, 0) == 3 :
+                    CountNeighborsBranch(x, 0) == 3;
+            cellBuffer[x, vSize - 1] =
+                cells[x, vSize - 1] ?
+                    CountNeighborsBranch(x, vSize - 1) == 2 || CountNeighborsBranch(x, vSize - 1) == 3 :
+                    CountNeighborsBranch(x, vSize - 1) == 3;
+        }
+        for (int y = 1; y < vSize - 1; y++)
+        {
+            cellBuffer[0, y] =
+                cells[0, y] ?
+                    CountNeighborsBranch(0, y) == 2 || CountNeighborsBranch(0, y) == 3 :
+                    CountNeighborsBranch(0, y) == 3;
+            cellBuffer[hSize - 1, y] =
+                cells[hSize - 1, y] ?
+                    CountNeighborsBranch(hSize - 1, y) == 2 || CountNeighborsBranch(hSize - 1, y) == 3 :
+                    CountNeighborsBranch(hSize - 1, y) == 3;
+        }
+    }
+
+    private byte CountNeighborsBranch(int x, int y)
+    {
+        byte result = 0;
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
             {
-                cellBuffer[s - 1, 0]++;
-                cellBuffer[s - 1, 1]++;
-                cellBuffer[s, 1]++;
-                cellBuffer[s + 1, 0]++;
-                cellBuffer[s + 1, 1]++;
-            }
-            if (cells[s, vSize - 1])
-            {
-                cellBuffer[s - 1, vSize - 2]++;
-                cellBuffer[s - 1, vSize - 1]++;
-                cellBuffer[s, vSize - 2]++;
-                cellBuffer[s + 1, vSize - 2]++;
-                cellBuffer[s + 1, vSize - 1]++;
+                if (i == 0 && j == 0)
+                    continue;
+                if (x + i >= 0 && x + i < hSize && y + j >= 0 && y + j < vSize)
+                    result += cells[x + i, y + j] ? (byte)1 : (byte)0;
             }
         }
-        for (int s = 1; s < vSize - 1; s++)
+        return result;
+    }
+
+    private byte CountNeighbors(int x, int y)
+    {
+        byte result = 0;
+        for (int i = -1; i <= 1; i++)
         {
-            if (cells[0, s])
+            for (int j = -1; j <= 1; j++)
             {
-                cellBuffer[0, s - 1]++;
-                cellBuffer[0, s + 1]++;
-                cellBuffer[1, s - 1]++;
-                cellBuffer[1, s]++;
-                cellBuffer[1, s + 1]++;
-            }
-            if (cells[hSize - 1, s])
-            {
-                cellBuffer[hSize - 2, s - 1]++;
-                cellBuffer[hSize - 2, s]++;
-                cellBuffer[hSize - 2, s + 1]++;
-                cellBuffer[hSize - 1, s - 1]++;
-                cellBuffer[hSize - 1, s + 1]++;
+                if (i == 0 && j == 0)
+                    continue;
+                result += cells[x + i, y + j] ? (byte)1 : (byte)0;
             }
         }
+        return result;
     }
 
     private void Step()
     {
-        Parallel.Invoke(StepCorners, StepEdges, () =>
+        StepCorners();
+        StepEdges();
+
+        Parallel.For(1, hSize - 1, (x) =>
         {
-            Parallel.For(1, hSize - 1, (x) =>
+            for (int y = 1; y < vSize - 1; y++)
             {
-                Parallel.For(1, vSize - 1, y =>
-                {
-                    if (cells[x, y])
-                    {
-                        cellBuffer[x - 1, y - 1]++;
-                        cellBuffer[x - 1, y]++;
-                        cellBuffer[x - 1, y + 1]++;
-                        cellBuffer[x, y - 1]++;
-                        cellBuffer[x, y + 1]++;
-                        cellBuffer[x + 1, y - 1]++;
-                        cellBuffer[x + 1, y]++;
-                        cellBuffer[x + 1, y + 1]++;
-                    }
-                });
-            });
+                byte n = CountNeighbors(x, y);
+                cellBuffer[x, y] = cells[x, y] ? n == 2 || n == 3 : n == 3;
+            }
         });
+
         for (int x = 0; x < hSize; x++)
         {
             for (int y = 0; y < vSize; y++)
             {
-                byte val = cellBuffer[x, y];
-                cells[x, y] = cells[x, y] ? val == 2 || val == 3 : val == 3;
-                cellBuffer[x, y] = 0;
+                cells[x, y] = cellBuffer[x, y];
+                cellBuffer[x, y] = false;
             }
         }
     }
@@ -295,7 +293,7 @@ public partial class MainForm : Form
         hSize = (int)xDim.Value;
         vSize = (int)yDim.Value;
         bool[,] tempCells = new bool[hSize, vSize];
-        cellBuffer = new byte[hSize, vSize];
+        cellBuffer = new bool[hSize, vSize];
         for (int x = 0; x < Math.Min(hSize, cells.GetLength(0)); x++)
             for (int y = 0; y < Math.Min(vSize, cells.GetLength(1)); y++)
                 tempCells[x, y] = cells[x, y];
